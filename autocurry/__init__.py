@@ -9,6 +9,7 @@ class autocurry(object):
         self.f = f
         self.fargs = fargs
         self.fkwargs = fkwargs or {}
+        self.__name__ = f.__name__
 
     def __call__(self, *args, **kwargs):
         # merge arguments from previous call with current call

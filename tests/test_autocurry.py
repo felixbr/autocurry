@@ -44,3 +44,15 @@ class TestAutocurryDecorator(object):
             return queryset
 
         assert bulk_update(included=True)({'counter': 5}) == {'counter': 5, 'included': True}
+        assert bulk_update(included=True)({'counter': 5}, **{'included': False}) == {'counter': 5, 'included': False}
+
+    def test_name_property(self):
+        @autocurry
+        def unique(a, b):
+            pass
+
+        assert unique.__name__ == 'unique'
+        assert unique(0).__name__ == 'unique'
+
+        unique.__name__ = 'incorrect'
+        assert unique.__name__ == 'incorrect'
