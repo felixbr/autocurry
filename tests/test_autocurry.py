@@ -36,3 +36,11 @@ class TestAutocurryDecorator(object):
         assert add(1)(2, 3, 4) == 10
         assert add(1, 2, *[3, 4]) == 10
         assert add(1)(2, *[3, 4]) == 10
+
+    def test_keyword_arguments(self):
+        @autocurry
+        def bulk_update(queryset, **kwargs):
+            queryset.update(**kwargs)
+            return queryset
+
+        assert bulk_update(included=True)({'counter': 5}) == {'counter': 5, 'included': True}
