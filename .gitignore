@@ -37,3 +37,6 @@ nosetests.xml
 
 # IDE
 .idea/
+
+# CI⁄
+.github/
