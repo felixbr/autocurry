@@ -1,4 +1,5 @@
-from inspect import getargspec
+import inspect
+import sys
 
 __all__ = ['autocurry']
 
@@ -17,7 +18,14 @@ class autocurry(object):
         self.fkwargs.update(kwargs)
 
         # determine number of non-keyword args
-        arg_spec = getargspec(self.f)
+        # Python v3.5 reported getfullargspec as deprecated, but this was
+        # reversed in v3.6. For simplicity, we'll just do it the new way
+        # for everything but v3.5, which means the deprecation warning about
+        # getargspec will still show for v3.5
+        if sys.version_info[0] == 3 and sys.version_info[1] != 5:
+            arg_spec = inspect.getfullargspec(self.f)
+        else:
+            arg_spec = inspect.getargspec(self.f)
         num_args = len(arg_spec[0])
         num_args -= len(arg_spec[3]) if arg_spec[3] else 0  # subtract number of arguments which have default values
 
